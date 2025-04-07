@@ -54,7 +54,7 @@ const history = useHistory()
   };
 
    
-  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [ , setIsSubscribed] = useState(false);
 
   const checkExistingSubscription = async () => {
     const registration = await navigator.serviceWorker.ready;

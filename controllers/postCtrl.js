@@ -50,32 +50,30 @@ const postCtrl = {
             }
         },
     
-    getPosts: async (req, res) => {
-        try {
-            const features =  new APIfeatures(Posts.find({
-                
-            }), req.query).paginating()
-
-            const posts = await features.query.sort('-createdAt')
-            .populate("user likes", "avatar username followers following")
-            .populate({
-                path: "comments",
-                populate: {
-                    path: "user likes",
-                    select: "-password"
-                }
-            })
-
-            res.json({
-                msg: 'Success!',
-                result: posts.length,
-                posts
-            })
-
-        } catch (err) {
-            return res.status(500).json({msg: err.message})
-        }
-    },
+        getPosts: async (req, res) => {
+            try {
+                const features =  new APIfeatures(Posts.find(), req.query).paginating()
+    
+                const posts = await features.query.sort('-createdAt')
+                .populate("user likes", "avatar username followers")
+                .populate({
+                    path: "comments",
+                    populate: {
+                        path: "user likes",
+                        select: "-password"
+                    }
+                })
+    
+                res.json({
+                    msg: 'Success!',
+                    result: posts.length,
+                    posts
+                })
+    
+            } catch (err) {
+                return res.status(500).json({msg: err.message})
+            }
+        },
     updatePost: async (req, res) => {
         try {
             const {   title,link, description, price, unidaddeprecio, oferta,  
