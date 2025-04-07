@@ -45,7 +45,7 @@ function App() {
   },[dispatch])
 
   useEffect(() => {
-    dispatch(getPosts(auth.token));
+    dispatch(getPosts());
     if (auth.token) {
         dispatch(getSuggestions(auth.token));
         dispatch(getNotifies(auth.token));
