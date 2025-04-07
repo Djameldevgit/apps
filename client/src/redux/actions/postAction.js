@@ -51,10 +51,10 @@ export const createPost= ({ postData, images, auth, socket }) => async (dispatch
     }
 }
 
-export const getPosts = (token) => async (dispatch) => {
+export const getPosts = () => async (dispatch) => {
     try {
         dispatch({ type: POST_TYPES.LOADING_POST, payload: true })
-        const res = await getDataAPI('posts', token)
+        const res = await getDataAPI('posts')
         
         dispatch({
             type: POST_TYPES.GET_POSTS,
