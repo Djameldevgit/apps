@@ -88,10 +88,13 @@ const history = useHistory()
   }, [dispatch]);
 
   // Efecto para obtener posts
-
-
   useEffect(() => {
     dispatch(getPosts());
+     
+  }, [dispatch ])
+
+  useEffect(() => {
+    
     if (auth.token) {
       
       dispatch(getSuggestions(auth.token))

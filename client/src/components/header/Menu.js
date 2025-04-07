@@ -76,9 +76,6 @@ const Menu = () => {
                             <Link className="dropdown-item" to='/message'>chat</Link>
                             <Link className="dropdown-item" to='/informacionaplicacion'>Info App</Link>
 
-                            <Link className="dropdown-item" to='/roles'>Roles</Link>
-
-                         
 
 
                             {auth.user.role === "admin" && (
@@ -87,8 +84,10 @@ const Menu = () => {
                                     <div className="dropdown-item" onClick={() => dispatch({ type: GLOBALTYPES.STATUS, payload: true })}>
                                         Ajouter un annnoces
                                     </div>
-
                                     <Link className="dropdown-item" to='/roles'>Roles</Link>
+
+
+
                                     <Link className="dropdown-item" to='/usersaction'>Usuarios acción</Link>
                                     <Link className="dropdown-item" to='/usersedicion'>Edición de usuarios</Link>
                                     <Link className="dropdown-item" to='/listadeusuariosbloqueadoss'>Usuarios bloqueados</Link>

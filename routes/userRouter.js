@@ -9,7 +9,7 @@ router.get('/users/active-last-3h', auth, userCtrl.getActiveUsersLast3h); // Par
  
 router.get('/users',auth,   userCtrl.getUsers)
  
-router.get('/search', auth, userCtrl.searchUser)
+router.get('/search',   userCtrl.searchUser)
 router.get('/delete/:id', auth, userCtrl.getUser)
 router.get('/user/:id', auth, userCtrl.getUser)
 //router.patch('/user', auth, userCtrl.deleteUser)

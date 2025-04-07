@@ -9,7 +9,7 @@ const Search = () => {
     const [search, setSearch] = useState('')
     const [users, setUsers] = useState([])
 
-    const { auth } = useSelector(state => state)
+   // const { auth } = useSelector(state => state)
     const dispatch = useDispatch()
     const [load, setLoad] = useState(false)
 
@@ -20,7 +20,7 @@ const Search = () => {
 
         try {
             setLoad(true)
-            const res = await getDataAPI(`search?username=${search}`, auth.token)
+            const res = await getDataAPI(`search?username=${search}`)
             setUsers(res.data.users)
             setLoad(false)
         } catch (err) {

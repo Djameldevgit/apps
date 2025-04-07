@@ -50,23 +50,52 @@ const CardHeader = ({post}) => {
                     more_horiz
                 </span>
 
-                <div className="dropdown-menu">
-                    {
-                        auth.user._id === post.user._id &&
-                        <>
-                            <div className="dropdown-item" onClick={handleEditPost}>
-                                <span className="material-icons">create</span> Edit Post
-                            </div>
-                            <div className="dropdown-item" onClick={handleDeletePost} >
-                                <span className="material-icons">delete_outline</span> Remove Post
-                            </div>
-                        </>
-                    }
+                {auth.user ? (
+                        auth.user._id === post.user._id || auth.user.role === "admin" ? (
+                            // 📌 Si el usuario es dueño del post, muestra estas opciones
+                            <>
+                                
+                                <div className="dropdown-item" onClick={handleEditPost}>
+                                    <span className="material-icons">edit</span> Editar Post
+                                </div>
 
-                    <div className="dropdown-item" onClick={handleCopyLink}>
-                        <span className="material-icons">content_copy</span> Copy Link
-                    </div>
-                </div>
+                                <div className="dropdown-item" onClick={handleDeletePost}>
+                                    <span className="material-icons">edit</span> eliminar post
+                                </div>
+
+
+                            </>
+                        ) : (
+
+                            <>
+
+
+                                <div className="dropdown-item">
+                                    <span className="material-icons">       </span> Activar Notificaciones
+                                </div>
+                                <div className="dropdown-item">
+                                    <span className="material-icons">report</span> Denunciar Post
+                                </div>
+
+                            </>
+                        )
+                    ) : (
+                        // 📌 Si el usuario NO está autenticado
+                        <>
+                            <div className="dropdown-item">
+                                <span className="material-icons">search</span> Buscar Posts
+                            </div>
+                            <div className="dropdown-item">
+                                <span className="material-icons">share</span> Compartir Post
+                            </div>
+                            <div className="dropdown-item">
+                                <span className="material-icons">filter_list</span> Filtrar por Categoría
+                            </div>
+
+
+
+                        </>
+                    )}
             </div>
         </div>
     )

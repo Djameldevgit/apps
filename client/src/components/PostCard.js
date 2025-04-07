@@ -1,21 +1,21 @@
 import React from 'react'
- 
+
 import CardBodyCarousel from './home/post_card/CardBodyCarousel'
 
 
 import Comments from './home/Comments'
 import InputComment from './home/InputComment'
- 
+
 
 import { useLocation } from "react-router-dom";
- 
- import { useSelector } from 'react-redux';
- 
+
+import { useSelector } from 'react-redux';
+
 import CommentDate from './home/post_card/CommentDate'
 import DescriptionPost from './home/post_card/DescriptionPost';
 import CardBodyTitle from './home/post_card/CardBodyTitle';
 import CardHeader from './home/post_card/CardHeader';
- 
+
 
 const PostCard = ({ post, theme }) => {
     const location = useLocation();
@@ -27,24 +27,24 @@ const PostCard = ({ post, theme }) => {
     return (
         <div className="card my-3">
 
-<CardHeader post={post} />
+            <CardHeader post={post} />
 
-        <CardBodyTitle  post={post} />
-            
+            <CardBodyTitle post={post} />
+
             <CardBodyCarousel post={post} theme={theme} />
 
-<CommentDate post={post} theme={theme}/>
+            <CommentDate post={post} theme={theme} />
 
 
 
             {isPostDetailPage && <DescriptionPost post={post} />}
 
-         
+
             {isAuthenticated && isPostDetailPage && (
                 <>
 
 
-                       {isPostDetailPage && <Comments post={post} />}
+                    {isPostDetailPage && <Comments post={post} />}
                     {isPostDetailPage && <InputComment post={post} />}
                 </>
             )}
