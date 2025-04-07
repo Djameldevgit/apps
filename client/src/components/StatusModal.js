@@ -130,10 +130,9 @@ const StatusModal = () => {
     };
 
     useEffect(() => {
-
+        console.log("status en useEffect:", status);
         if (status?.onEdit) {
             setPostData({
-
                 title: status.title || "",
 
                 description: status.description || "",

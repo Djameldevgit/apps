@@ -78,9 +78,7 @@ const Menu = () => {
 
                             <Link className="dropdown-item" to='/roles'>Roles</Link>
 
-                            <div className="dropdown-item" onClick={() => dispatch({ type: GLOBALTYPES.STATUS, payload: true })}>
-                                Ajouter un annnoces
-                            </div>
+                         
 
 
                             {auth.user.role === "admin" && (

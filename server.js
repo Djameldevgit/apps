@@ -51,7 +51,7 @@ app.use('/api', require('./routes/commentRouter'))
 app.use('/api', require('./routes/notifyRouter')) // ✅ Tu sistema actual
 app.use('/api', require('./routes/messageRouter'))
 app.use('/api', require('./routes/blockUserRouter'))
- 
+app.use('/api', require('./routes/roleRouter'))
 
 // Configuración de MongoDB (sin cambios)
 mongoose.connect(process.env.MONGODB_URL, {

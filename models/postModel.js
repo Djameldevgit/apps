@@ -5,19 +5,9 @@ const postSchema = new mongoose.Schema({
  
   title: {
     type: String,
-    enum: [ // Valores permitidos (iguales a los del formulario)
-      'Aplicación Web',
-      'Aplicación Móvil',
-      'PWA',
-      'Web Responsive',
-      'Landing Page',
-      'Tienda Online',
-      'Aplicación de Escritorio',
-      'API/Servicio Backend',
-      'Juego Web/Móvil'
-    ],
+   
     required: true,
-    trim: true
+     
   },
 
  

@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 const DescriptionPost = ({ post }) => {
   const [readMore, setReadMore] = useState(false);
 
-  // Función para obtener icono del título
+  /* Función para obtener icono del título
   const getTitleIcon = (title) => {
     if (!title) return <i className="fas fa-home icon-title"></i>;
 
@@ -50,15 +50,15 @@ const DescriptionPost = ({ post }) => {
     
     return textMap[linkType?.toLowerCase()] || textMap.default;
   };
-
+*/
   return (
     <div className="description-container">
       <div className="post-info">
-        {/* Título con icono */}
+     
         <div className="info-item">
-          {getTitleIcon(post.title)}
-          <span className="info-label">Aps:</span>
-          <span className="info-value">{post.title}</span>
+        <i className="fas fa-globe icon-title"></i>
+          <span className="info-label">Aps:</span> <span className='mr-2'>Vente</span>
+          <span className="title1">{post.title}</span>
         </div>
 
         {/* Fecha */}
@@ -131,7 +131,7 @@ const DescriptionPost = ({ post }) => {
         {/* Enlace */}
         {(post.link) && (
           <div className="info-item">
-            {getLinkIcon(post.title)} {/* Usamos post.title para determinar el tipo */}
+            {(post.title)} {/* Usamos post.title para determinar el tipo */}
             <span className="info-label">Enlace:</span>
             <a
               href={post.link.startsWith('http') ? post.link : `https://${post.link}`}
@@ -139,7 +139,7 @@ const DescriptionPost = ({ post }) => {
               rel="noopener noreferrer"
               className="info-value link-descarga"
             >
-              {getLinkText(post.title)} {/* Texto dinámico */}
+              {post.title}  
             </a>
           </div>
         )}

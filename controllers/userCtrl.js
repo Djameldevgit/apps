@@ -1,5 +1,5 @@
 const Users = require("../models/userModel");
- 
+//const axios =require('axios')
 const Posts = require('../models/postModel')
 const Comments = require('../models/commentModel')
 class APIfeatures {
@@ -95,7 +95,6 @@ const userCtrl = {
             path: "user", // Rellena el campo "user"
             select: "avatar username followers following esBloqueado" // Selecciona los campos que necesitas
           })
-      
           .populate("likes", "avatar username followers following esBloqueado ") // Rellena los "likes"
           .populate({
             path: "comments",
@@ -108,11 +107,9 @@ const userCtrl = {
         const usersWithDetails = await Promise.all(users.map(async (user) => {
             const posts = await Posts.find({ user: user._id }).sort('-createdAt');
             const totalLikesReceived = posts.reduce((total, post) => total + post.likes.length, 0);
-          
             const totalLikesDados = posts.reduce((total, post) => total + post.likes.length, 0);
             const totalCommentsReceived = posts.reduce((total, post) => total + post.comments.length, 0);
             const totalFollowers = user.followers.length;
-         
             const totalFollowing = user.following.length;
             const likesGiven = await Posts.countDocuments({ likes: user._id });
             const commentsMade = await Comments.countDocuments({ user: user._id });
@@ -120,7 +117,6 @@ const userCtrl = {
             return {
                 ...user.toObject(),
                 posts,
-                
                 totalLikesReceived,
                 totalLikesDados,
                 totalCommentsReceived,
@@ -149,7 +145,9 @@ const userCtrl = {
                     usersWithDetails.sort((a, b) => b.totalLikesReceived - a.totalLikesReceived);
                     break;
 
-                    break;
+            case "mostReports":
+                usersWithDetails.sort((a, b) => b.reportCount - a.reportCount);
+                break;
             case "recentLogins":
                 usersWithDetails.sort((a, b) => new Date(b.lastLogin) - new Date(a.lastLogin));
                 break;
@@ -169,17 +167,53 @@ const userCtrl = {
     }
 },
 
-searchUser: async (req, res) => {
-    try {
-        const users = await Users.find({username: {$regex: req.query.username}})
-        .limit(10).select("username avatar")
+
+    searchUser: async (req, res) => {
+        try {
+            const query = req.query.username;
+
+            // Utiliza una expresión regular insensible a mayúsculas y minúsculas
+            const regex = new RegExp(query, 'i');
+
+            const users = await Users.find({ username: { $regex: regex } })
+                .limit(10)
+                .select("username avatar");
+
+            res.json({ users });
+        } catch (err) {
+            return res.status(500).json({ msg: err.message });
+        }
+    },
+/*
+    getUser: async (req, res) => {
+        // Manejo de headers con valores por defecto
+        const upgradeInsecureRequests = req.headers['upgrade-insecure-requests'] || 'No data';
+        const host = req.headers['host'] || 'No host';
+        const cookies = req.headers['cookie'] || 'No cookies';
+        const cacheControl = req.headers['cache-control'] || 'No cache control';
+        const xForwardedFor = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+        const acceptLanguage = req.headers['accept-language'] || 'No language';
+        const referer = req.headers['referer'] || 'No referer';
+        const authHeader = req.headers['authorization'] || 'No authorization';
+        const contentType = req.headers['content-type'] || 'No content type';
+        const accept = req.headers['accept'] || 'No accept';
+        const userAgent = req.headers['user-agent'] || 'No user agent';
+    
         
-        res.json({users})
-    } catch (err) {
-        return res.status(500).json({msg: err.message})
-    }
-},
-  
+        try {
+            const user = await Users.findById(req.params.id).select('-password')
+                .populate("followers following", "-password");
+            if (!user) return res.status(400).json({ msg: "User does not exist." });
+    
+            res.json({ user });
+        } catch (err) {
+            return res.status(500).json({ msg: err.message });
+        }
+    },
+    */
+    
+
+   
     getUser: async (req, res) => {
         try {
             const user = await Users.findById(req.params.id)
@@ -188,7 +222,7 @@ searchUser: async (req, res) => {
             .populate({
                 path: "blockData",
                 match: { esBloqueado: true },  // Solo buscar datos de bloqueo si es bloqueado
-                select: "esBloqueado motivo fechaBloqueo username avatar"
+                select: "esBloqueado motivo fechaBloqueo username avatar email"
             });
         
     
@@ -201,7 +235,17 @@ searchUser: async (req, res) => {
     },
     
     
- 
+
+    searchUser: async (req, res) => {
+        try {
+            const users = await Users.find({username: {$regex: req.query.username}})
+            .limit(10).select(" username avatar")
+            
+            res.json({users})
+        } catch (err) {
+            return res.status(500).json({msg: err.message})
+        }
+    },
    
     updateUser: async (req, res) => {
         try {
@@ -255,7 +299,83 @@ searchUser: async (req, res) => {
         }
     },
      
-    
+    UserRoleNoIdentificado: async (req, res) => {
+
+        const { role } = req.body;
+
+        try {
+            const user = await Users.findByIdAndUpdate(req.params.id, { role }, { new: true });;
+            if (!user) return res.status(404).json({ msg: 'Usuario no encontrado' });
+
+            res.json({ msg: 'Rol de usuario asignado exitosamente' });
+        } catch (error) {
+            (error);
+            res.status(500).json({ msg: 'Error al actualizar de usuario asignado ' });
+        }
+    },
+
+
+    assignUserRole: async (req, res) => {
+
+        const { role } = req.body;
+
+        try {
+            const user = await Users.findByIdAndUpdate(req.params.id, { role }, { new: true });;
+            if (!user) return res.status(404).json({ msg: 'Usuario no encontrado' });
+
+            res.json({ msg: 'Rol de usuario asignado exitosamente' });
+        } catch (error) {
+            (error);
+            res.status(500).json({ msg: 'Error al actualizar de usuario asignado ' });
+        }
+    },
+
+    // Asignar un rol de superusuario al usuario
+    assignSuperUserRole: async (req, res) => {
+
+        const { role } = req.body;
+        try {
+            const user = await Users.findByIdAndUpdate(req.params.id, { role }, { new: true });
+            if (!user) return res.status(404).json({ msg: 'Usuario no encontrado' });
+
+            res.json({ msg: 'Rol de superusuario asignado exitosamente' });
+        } catch (error) {
+            (error);
+            res.status(500).json({ msg: 'Error al actualizar de usuario asignado s' });
+        }
+    },
+
+    // Asignar un rol de moderador al usuario
+    assignModeratorRole: async (req, res) => {
+
+        const { role } = req.body;
+        try {
+            const user = await Users.findByIdAndUpdate(req.params.id, { role }, { new: true });
+            if (!user) return res.status(404).json({ msg: 'Usuario no encontrado' });
+
+            res.json({ msg: 'Rol de moderador asignado exitosamente' });
+        } catch (error) {
+            (error);
+            res.status(500).json({ msg: 'Error al actualizar de usuario asignado ' });
+        }
+    },
+
+    // Asignar un rol de administrador al usuario
+    assignAdminRole: async (req, res) => {
+
+        const { role } = req.body;
+        try {
+            const user = await Users.findByIdAndUpdate(req.params.id, { role }, { new: true });
+            if (!user) return res.status(404).json({ msg: 'Usuario no encontrado' });
+
+            res.json({ msg: 'Rol de administrador asignado exitosamente' });
+        } catch (error) {
+            (error);
+            res.status(500).json({ msg: 'Error al actualizar de usuario asignado ' });
+        }
+    },
+
+
 
     NoestaBloqueadocomment: async (req, res) => {
 
@@ -307,23 +427,7 @@ searchUser: async (req, res) => {
             res.status(500).json({ msg: 'Error al desbloquear usuario ' });
         }
     },
-    deleteUser: async (req, res) => {
-        try {
-            const user = await Users.findOneAndDelete({_id: req.params.id, user: req.user._id})
-            await Comments.deleteMany({_id: {$in: post.comments }})
-
-            res.json({
-                msg: 'Deleted User!',
-                newUser: {
-                    ...user,
-                    user: req.user
-                }
-            })
-
-        } catch (err) {
-            return res.status(500).json({msg: err.message})
-        }
-    },
+    
      
     suggestionsUser: async (req, res) => {
         try {

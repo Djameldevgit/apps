@@ -8,11 +8,11 @@ import UserCard from "./UserCard";
 import BloqueModalUser from "./BloqueModalUser";
  
 const UsersEdicion = () => {
-  const { homeUsers,reportReducer, auth } = useSelector((state) => state);
-  console.log(reportReducer)
+  const { homeUsers,  auth } = useSelector((state) => state);
+ 
   const dispatch = useDispatch();
   const [load, setLoad] = useState(false);
-  const [search, setSearch] = useState("");
+  const [search,  ] = useState("");
   const [filteredUsers, setFilteredUsers] = useState(homeUsers.users || []);
   const [openBlockModal, setOpenBlockModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);

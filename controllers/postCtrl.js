@@ -79,13 +79,13 @@ const postCtrl = {
     updatePost: async (req, res) => {
         try {
             const {   title,link, description, price, unidaddeprecio, oferta,  
-                quartier,  telefono,  images } = req.body;
+                 telefono,  images } = req.body;
 
             const post = await Posts.findOneAndUpdate(
                 { _id: req.params.id },
                 {
                     title,link, description, price, unidaddeprecio, oferta,  
-                    quartier,  telefono,  images       },
+                       telefono,  images       },
                 { new: true } // 🔥 Esto devuelve el post actualizado
             )
                 .populate("user likes", "avatar username")

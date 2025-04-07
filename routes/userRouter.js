@@ -12,7 +12,7 @@ router.get('/users',auth,   userCtrl.getUsers)
 router.get('/search', auth, userCtrl.searchUser)
 router.get('/delete/:id', auth, userCtrl.getUser)
 router.get('/user/:id', auth, userCtrl.getUser)
-router.patch('/user', auth, userCtrl.deleteUser)
+//router.patch('/user', auth, userCtrl.deleteUser)
  
 router.get('/suggestionsUser', auth, userCtrl.suggestionsUser)
    
