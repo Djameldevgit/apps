@@ -44,34 +44,23 @@ self.addEventListener("fetch", (event) => {
 });
 
 // --- Notificaciones Push ---
+s// sw.js
 self.addEventListener('push', (event) => {
-  const fallbackPayload = {
+  const payload = event.data?.json() || {
     title: 'Nueva notificación',
-    body: '¡Tienes una actualización!',
+    body: 'Tienes una actualización',
     url: '/'
   };
 
-  const payload = event.data?.json().catch(() => fallbackPayload) || fallbackPayload;
-
-  const options = {
-    body: payload.body,
-    icon: '/logo192.png',
-    badge: '/badge.png',
-    vibrate: [200, 100, 200],
-    data: { url: payload.url || '/' }
-  };
-
   event.waitUntil(
-    self.registration.showNotification(payload.title, options)
-      .then(() => {
-        if ('setAppBadge' in navigator) {
-          navigator.setAppBadge(1).catch(e => console.log("Badge no soportado"));
-        }
-      })
-      .catch(err => console.error('Error en notificación:', err))
+    self.registration.showNotification(payload.title, {
+      body: payload.body,
+      icon: '/logo192.png',
+      badge: '/badge.png', // ¡Archivo debe existir en /public!
+      data: { url: payload.url }
+    })
   );
 });
-
 // --- Clic en Notificación ---
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();

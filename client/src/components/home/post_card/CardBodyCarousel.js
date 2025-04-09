@@ -3,18 +3,26 @@ import Carousel from '../../Carousel';
 import { likePost, unLikePost, savePost, unSavePost } from '../../../redux/actions/postAction';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
  
-
 const CardBodyCarousel = ({ post }) => {
     const [isLike, setIsLike] = useState(false);
     const [loadLike, setLoadLike] = useState(false);
     const [saved, setSaved] = useState(false);
     const [saveLoad, setSaveLoad] = useState(false);
     const [showModal, setShowModal] = useState(false);
- 
+
     const history = useHistory();
     const { auth, socket } = useSelector(state => state);
     const dispatch = useDispatch();
+
+    
+    const location = useLocation();
+    const isPostDetailPage = location.pathname === `/post/${post._id}`;
+   
+    
+
+
 
     useEffect(() => {
         if (auth.user && post.likes.find(like => like._id === auth.user._id)) {
@@ -29,7 +37,7 @@ const CardBodyCarousel = ({ post }) => {
         if (loadLike) return;
 
         setLoadLike(true);
-        dispatch(likePost({ post, auth, socket  }));
+        dispatch(likePost({ post, auth, socket }));
         setLoadLike(false);
     };
 
@@ -38,7 +46,7 @@ const CardBodyCarousel = ({ post }) => {
         if (loadLike) return;
 
         setLoadLike(true);
-        dispatch(unLikePost({ post, auth, socket  }));
+        dispatch(unLikePost({ post, auth, socket }));
         setLoadLike(false);
     };
 
@@ -70,6 +78,7 @@ const CardBodyCarousel = ({ post }) => {
 
     return (
         <div>
+           
             <div className="card_body">
                 {post.images.length > 0 && (
                     <div className="carousel-container" style={{ position: 'relative' }}>
@@ -147,10 +156,28 @@ const CardBodyCarousel = ({ post }) => {
                         </div>
 
                         <div className="card">
-                <div className="card__image" onClick={() => history.push(`/post/${post._id}`)}>
-                    <Carousel images={post.images} id={post._id} />
-                </div>
+                            <div className="card__image" onClick={() => history.push(`/post/${post._id}`)}>
+                                <Carousel images={post.images} id={post._id} />
+                            </div>
                         </div>
+                        {!isPostDetailPage &&  
+                        <div>
+                         {post.link && (
+                            <div className="mt-3 mb-1 w-100"> {/* Aquí se le da un ancho del 100% al contenedor */}
+                                <a
+                                    href={post.link.startsWith('http') ? post.link : `https://${post.link}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="btn btn-primary w-100"
+                                >
+                                    <i className="fas fa-external-link-alt mr-2"></i> Accéder à l'application
+                                </a>
+                            </div>
+                        )}</div>
+                        }
+                       
+
+
                     </div>
                 )}
             </div>
@@ -161,14 +188,14 @@ const CardBodyCarousel = ({ post }) => {
                         <h4>Titre</h4>
                         <p>Message</p>
                         <div className="modal-buttons">
-                            <button onClick={() => history.push("/login")}> 
-                               Conections
+                            <button onClick={() => history.push("/login")}>
+                                Conections
                             </button>
                             <button onClick={() => history.push("/register")}>
-                               Registre
+                                Registre
                             </button>
                             <button onClick={() => setShowModal(false)}>
-                               Fermer
+                                Fermer
                             </button>
                         </div>
                     </div>

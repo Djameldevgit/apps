@@ -1,0 +1,35 @@
+import React from 'react'
+import { useParams } from 'react-router-dom'
+import NotFound from '../components/NotFound'
+import { useSelector } from 'react-redux'
+
+const generatePage = (pageName) => {
+    const component = () => require(`../pages/${pageName}`).default
+
+    try {
+        return React.createElement(component())
+    } catch (err) {
+        return <NotFound />
+    }
+}
+
+const PageRender = () => {
+    const { page, id } = useParams()
+    const { auth } = useSelector(state => state)
+
+    let pageName = ""
+
+    // Excluir 'post/[id]' de la autenticación
+    if (page === "post" && id) {
+        pageName = `${page}/[id]`  // No requiere autenticación
+    } else if (auth.token) {
+        // Si el usuario está autenticado y no es 'post/[id]', generamos la página
+        pageName = id ? `${page}/[id]` : `${page}`
+    } else {
+        pageName = "login"  // Si no está autenticado y no es 'post/[id]', redirige a login
+    }
+
+    return generatePage(pageName)
+}
+
+export default PageRender

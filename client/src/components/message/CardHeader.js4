@@ -6,7 +6,7 @@ import moment from 'moment'
 import { GLOBALTYPES } from '../../../redux/actions/globalTypes'
 import { deletePost } from '../../../redux/actions/postAction'
 import { BASE_URL } from '../../../utils/config'
- 
+
 const CardHeader = ({post}) => {
     const { auth, socket } = useSelector(state => state)
     const dispatch = useDispatch()
@@ -17,7 +17,12 @@ const CardHeader = ({post}) => {
         dispatch({ type: GLOBALTYPES.STATUS, payload: {...post, onEdit: true}})
     }
 
-   
+    const handleDeletePost = () => {
+        if(window.confirm("Are you sure want to delete this post?")){
+            dispatch(deletePost({post, auth, socket}))
+            return history.push("/")
+        }
+    }
 
    
 
@@ -36,14 +41,39 @@ const CardHeader = ({post}) => {
           </span>
       
           <div className="dropdown-menu dropdown-menu-right shadow-sm rounded mt-2" aria-labelledby="moreLink">
-           
-                <div>
+            {auth.user ? (
+              auth.user._id === post.user._id || auth.user.role === "admin" ? (
+                <>
                   <div className="dropdown-item" onClick={handleEditPost}>
                     <span className="material-icons mr-2">edit</span> Éditer le post
                   </div>
-                
+                  <div className="dropdown-item" onClick={handleDeletePost}>
+                    <span className="material-icons mr-2">delete</span> Supprimer le post
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="dropdown-item">
+                    <span className="material-icons mr-2">notifications</span> Activer les notifications
+                  </div>
+                  <div className="dropdown-item">
+                    <span className="material-icons mr-2">report</span> Signaler le post
+                  </div>
+                </>
+              )
+            ) : (
+              <>
+                <div className="dropdown-item">
+                  <span className="material-icons mr-2">search</span> Rechercher des posts
                 </div>
-             
+                <div className="dropdown-item">
+                  <span className="material-icons mr-2">share</span> Partager le post
+                </div>
+                <div className="dropdown-item">
+                  <span className="material-icons mr-2">filter_list</span> Filtrer par catégorie
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -22,11 +22,11 @@
 
 /* ---------- Comments ---------- */
 .comment_display{
-    padding: 10px 25px;
+    padding: 3px 10px;
 }
 .comment_card .comment_content{
     background: #eee;
-    padding: 7px;
+    padding: 3px;
     border-radius: 10px;
     border-top-left-radius: 0;
     display: flex;
@@ -52,7 +52,7 @@
 }
 .comment_card .comment_content .dropdown-item{
     display: flex;
-    margin: 10px 0;
+    margin: 7px 0;
 }
 .comment_card .comment_content textarea{
     width: 100%;

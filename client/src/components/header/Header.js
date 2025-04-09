@@ -11,14 +11,14 @@ const Header = () => {
 
                 <Link to="/" className="logo d-flex align-items-center"
                     onClick={() => window.scrollTo({ top: 0 })}>
-                    {/* Logo desde la carpeta public */}
+                  
                     <img 
                         src="/logoalgeria.png"  // Ruta directa desde /public
                         alt="Logo alegeia" 
                         style={{ height: '40px', marginRight: '10px' }} 
                     />
                     <h1 className="navbar-brand text-uppercase p-0 m-0">
-                    Aps Algérie
+                    Aps Algérie 
                     </h1>
                 </Link>
 

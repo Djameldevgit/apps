@@ -4,13 +4,12 @@ const auth = require('../middleware/auth')
 
 router.route('/posts')
     .post(auth, postCtrl.createPost)
-    .get( postCtrl.getPosts)
+    .get(postCtrl.getPosts)
 
 router.route('/post/:id')
     .patch(auth, postCtrl.updatePost)
-    .get( postCtrl.getPost)
     .delete(auth, postCtrl.deletePost)
-
+router.get('/post/:id',   postCtrl.getPost)
 router.patch('/post/:id/like', auth, postCtrl.likePost)
 
 router.patch('/post/:id/unlike', auth, postCtrl.unLikePost)

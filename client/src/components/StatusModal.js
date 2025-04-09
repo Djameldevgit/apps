@@ -6,14 +6,14 @@ import { GLOBALTYPES } from '../redux/actions/globalTypes';
 
 
 import { createPost, updatePost } from '../redux/actions/postAction';
- 
+
 // Función que devuelve el icono según el tipo
 
 const StatusModal = () => {
     const { auth, theme, socket, status, } = useSelector((state) => state);
 
     const dispatch = useDispatch()
-    
+
     const initilastate = {
 
         title: "",
@@ -49,7 +49,7 @@ const StatusModal = () => {
         }));
     }
 
- 
+
 
     const handleChangeImages = e => {
         const files = [...e.target.files]
@@ -170,16 +170,17 @@ const StatusModal = () => {
                         onChange={handleChangeInput}
                         className="form-control"
                     >
-                        <option value="">Tipo de aplicación/sitio</option>
-                        <option value="Aplicación Web">Aplicación Web</option>
-                        <option value="Aplicación Móvil">Aplicación Móvil (iOS/Android)</option>
-                        <option value="PWA">PWA (Web + Móvil)</option>
-                        <option value="Web Responsive">Sitio Web Responsive</option>
-                        <option value="Landing Page">Landing Page</option>
-                        <option value="Tienda Online">Tienda Online (E-commerce)</option>
-                        <option value="Aplicación de Escritorio">Aplicación de Escritorio</option>
-                        <option value="API/Servicio Backend">API/Servicio Backend</option>
-                        <option value="Juego Web/Móvil">Juego Web/Móvil</option>
+                        <option value="">Type d'application/site</option>
+                        <option value="Application Web">Application Web</option>
+                        <option value="Application Mobile">Application Mobile (iOS/Android)</option>
+                        <option value="Application PWA Web + Mobile">Application PWA (Web + Mobile)</option>
+                        <option value="Site Web Responsive">Site Web Responsive</option>
+                        <option value="Page d’atterrissage">Page d’atterrissage (Landing Page)</option>
+                        <option value="Boutique en ligne">Boutique en ligne (E-commerce)</option>
+                        <option value="Application de bureau">Application de bureau</option>
+                        <option value="API/Service Backend">API/Service Backend</option>
+                        <option value="Jeu Web/Mobile">Jeu Web/Mobile</option>
+
                     </select>
                 </div>
                 <div className="form-group">

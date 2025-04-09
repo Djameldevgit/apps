@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-
+ 
 const DescriptionPost = ({ post }) => {
   const [readMore, setReadMore] = useState(false);
-
+  
+ 
   /* Función para obtener icono del título
   const getTitleIcon = (title) => {
     if (!title) return <i className="fas fa-home icon-title"></i>;
@@ -53,107 +54,112 @@ const DescriptionPost = ({ post }) => {
 */
   return (
     <div className="description-container">
-      <div className="post-info">
-     
-        <div className="info-item">
-        <i className="fas fa-globe icon-title"></i>
-          <span className="info-label">Aps:</span> <span className='mr-2'>Vente</span>
-          <span className="title1">{post.title}</span>
-        </div>
+  <div className="post-info">
 
-        {/* Fecha */}
-        <div className="info-item">
-          <i className="fas fa-calendar-alt"></i>
-          <span className="info-label">Publié le:</span>
-          <span className="info-value">
-            {new Date(post.createdAt).toLocaleDateString()} à {new Date(post.createdAt).toLocaleTimeString()}
-          </span>
-        </div>
-
-        {/* Vistas */}
-        {(post.vistas || []).length > 0 && (
-          <div className="info-item">
-            <i className="fas fa-eye"></i>
-            <span className="info-label">Vue:</span>
-            <span className="info-value">{post.vistas}</span>
-          </div>
-        )}
-
-        {/* Likes */}
-        {(post.likes || []).length > 0 && (
-          <div className="info-item">
-            <i className="fas fa-thumbs-up"></i>
-            <span className="info-label">Likes:</span>
-            <span className="info-value">{post.likes.length}</span>
-          </div>
-        )}
-
-        {/* Comentarios */}
-        {(post.comments || []).length > 0 && (
-          <div className="info-item">
-            <i className="fas fa-comments"></i>
-            <span className="info-label">Commentaires:</span>
-            <span className="info-value">{(post.comments || []).length}</span>
-          </div>
-        )}
-
-        {/* Descripción */}
-        {post.description && (
-          <div className="info-item">
-            <i className="fas fa-comments"></i>
-            <span className="info-label mb-2">Description:</span>
-            <span className="info-value">
-              <div className="card_body-content">
-                <span>
-                  {post.description.length < 60
-                    ? post.description
-                    : readMore ? post.description + ' ' : post.description.slice(0, 60) + '.....'}
-                </span>
-                {post.description.length > 60 && (
-                  <span className="readMore color-red" onClick={() => setReadMore(!readMore)}>
-                    {readMore ? 'masque lo contenu' : 'Lire plus'}
-                  </span>
-                )}
-              </div>
-            </span>
-          </div>
-        )}
-
-        {/* Oferta */}
-        {(post.oferta || []).length > 0 && (
-          <div className="info-item">
-            <i className="fas fa-comments"></i>
-            <span className="info-label">Type d'offre:</span>
-            <span className="info-value">{(post.oferta || []).length}</span>
-          </div>
-        )}
-
-        {/* Enlace */}
-        {(post.link) && (
-          <div className="info-item">
-            {(post.title)} {/* Usamos post.title para determinar el tipo */}
-            <span className="info-label">Enlace:</span>
-            <a
-              href={post.link.startsWith('http') ? post.link : `https://${post.link}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="info-value link-descarga"
-            >
-              {post.title}  
-            </a>
-          </div>
-        )}
-
-        {/* Teléfono */}
-        {(post.telefono || []).length > 0 && (
-          <div className="info-item">
-            <i className="fas fa-phone-alt"></i> {/* Icono más apropiado */}
-            <span className="info-label">Téléphone:</span>
-            <span className="info-value">{(post.telefono || []).length}</span>
-          </div>
-        )}
-      </div>
+    {/* Titre et type */}
+    <div className="info-item">
+      <i className="fas fa-globe icon-title"></i>
+      <span className="info-label">Type :</span> 
+      <span className="title1">{post.title}</span>
     </div>
+
+    {/* Date de publication */}
+    <div className="info-item">
+      <i className="fas fa-calendar-alt"></i>
+      <span className="info-label">Publié le :</span>
+      <span className="info-value">
+        {new Date(post.createdAt).toLocaleDateString()} à {new Date(post.createdAt).toLocaleTimeString()}
+      </span>
+    </div>
+
+    {/* Vues */}
+    {(post.vistas || []).length > 0 && (
+      <div className="info-item">
+        <i className="fas fa-eye"></i>
+        <span className="info-label">Vues :</span>
+        <span className="info-value">{post.vistas}</span>
+      </div>
+    )}
+
+    {/* Likes */}
+    {(post.likes || []).length > 0 && (
+      <div className="info-item">
+        <i className="fas fa-thumbs-up"></i>
+        <span className="info-label">J’aime :</span>
+        <span className="info-value">{post.likes.length}</span>
+      </div>
+    )}
+
+    {/* Commentaires */}
+    {(post.comments || []).length > 0 && (
+      <div className="info-item">
+        <i className="fas fa-comments"></i>
+        <span className="info-label">Commentaires :</span>
+        <span className="info-value">{post.comments.length}</span>
+      </div>
+    )}
+
+    {/* Description */}
+    {post.description && (
+      <div className="info-item">
+        <i className="fas fa-align-left"></i>
+        <span className="info-label mb-2">Description :</span>
+        <span className="info-value">
+          <div className="card_body-content">
+            <span>
+              {post.description.length < 60
+                ? post.description
+                : readMore
+                  ? post.description + ' '
+                  : post.description.slice(0, 60) + '.....'}
+            </span>
+            {post.description.length > 60 && (
+              <span className="readMore color-red" onClick={() => setReadMore(!readMore)}>
+                {readMore ? 'Masquer le contenu' : 'Lire plus'}
+              </span>
+            )}
+          </div>
+        </span>
+      </div>
+    )}
+
+    {/* Offre */}
+    {(post.oferta || []).length > 0 && (
+      <div className="info-item">
+        <i className="fas fa-tags"></i>
+        <span className="info-label">Type d’offre :</span>
+        <span className="info-value">{post.oferta}</span>
+      </div>
+    )}
+
+    {/* Lien */}
+    {post.link && (
+      <div className="info-item">
+        <i className="fas fa-link"></i>
+        <span className="info-label">Lien: Aller à l'application</span>
+        <a
+          href={post.link.startsWith('http') ? post.link : `https://${post.link}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="info-value link-descarga"
+        >
+          {post.title}
+        </a>
+      </div>
+    )}
+
+    {/* Téléphone */}
+    {(post.telefono || []).length > 0 && (
+      <div className="info-item">
+        <i className="fas fa-phone-alt"></i>
+        <span className="info-label">Téléphone :</span>
+        <span className="info-value">{post.telefono}</span>
+      </div>
+    )}
+
+  </div>
+</div>
+
   );
 };
 
