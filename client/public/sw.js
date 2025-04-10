@@ -1,4 +1,5 @@
-const CACHE_NAME = "mi-app-cache-v2";  // Incrementa la versión al hacer cambios
+const CACHE_NAME = "Aps Web/Mobile";  // Incrementa la versión al hacer cambios
+ 
 const urlsToCache = [
   "/",
   "/index.html",
@@ -44,23 +45,34 @@ self.addEventListener("fetch", (event) => {
 });
 
 // --- Notificaciones Push ---
-s// sw.js
 self.addEventListener('push', (event) => {
-  const payload = event.data?.json() || {
+  const fallbackPayload = {
     title: 'Nueva notificación',
-    body: 'Tienes una actualización',
+    body: '¡Tienes una actualización!',
     url: '/'
   };
 
+  const payload = event.data?.json().catch(() => fallbackPayload) || fallbackPayload;
+
+  const options = {
+    body: payload.body,
+    icon: '/logo192.png',
+    badge: '/badge.png',
+    vibrate: [200, 100, 200],
+    data: { url: payload.url || '/' }
+  };
+
   event.waitUntil(
-    self.registration.showNotification(payload.title, {
-      body: payload.body,
-      icon: '/logo192.png',
-      badge: '/badge.png', // ¡Archivo debe existir en /public!
-      data: { url: payload.url }
-    })
+    self.registration.showNotification(payload.title, options)
+      .then(() => {
+        if ('setAppBadge' in navigator) {
+          navigator.setAppBadge(1).catch(e => console.log("Badge no soportado"));
+        }
+      })
+      .catch(err => console.error('Error en notificación:', err))
   );
 });
+
 // --- Clic en Notificación ---
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
